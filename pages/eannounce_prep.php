@@ -4,7 +4,7 @@ access_ensure_global_level( plugin_config_get( 'eannounce_sendmail_threshold' ) 
 html_page_top1( 'Eannounce plugin' );
 html_page_top2();
 print_manage_menu();
-$g_send	= plugin_page('Eannounce_send.php.php');
+$g_send	= plugin_page('eannounce_send.php');
 ?>
 <br/>
 

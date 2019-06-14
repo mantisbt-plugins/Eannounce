@@ -7,7 +7,7 @@ class EannouncePlugin extends MantisPlugin {
 	function register() {
 		$this->name        = 'Eannounce';
 		$this->description = 'Sending email notifications to user groups';
-		$this->version     = '0.99';
+		$this->version     = '0.99a';
 		$this->requires    = array('MantisCore'       => '1.2.0',);
 		$this->author      = 'Istvan Baktai';
 		$this->contact     = 'istvan.baktai_at_gmail.com';
