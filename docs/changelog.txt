@@ -1,0 +1,6 @@
+Version 0.01		15-08-2010		First draft
+Version 0.02		17-08-2010		Next draft, thanks to Cas Nuy for integrating
+									the plugin to the Mantis
+Version 0.99		22-08-2010		Fixed the issue with the user thresholds. Now the plugin is
+									ready to use. Future upgrade: the send email menu should
+									appear for only the authorized users.
