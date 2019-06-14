@@ -1,7 +1,7 @@
 <?PHP
 auth_reauthenticate();
 access_ensure_global_level( plugin_config_get( 'eannounce_sendmail_threshold' ) );
-layout_page_header( lang_get( 'plugin_eannouncesendpage_title' ) );
+layout_page_header( plugin_lang_get( 'sendpage_title' ) );
 
 layout_page_begin( 'manage_overview_page.php' );
 print_manage_menu('eannounce_prep.php');
@@ -16,7 +16,7 @@ $user_id = auth_get_current_user_id();
 		<div class="widget-header widget-header-small">
 			<h4 class="widget-title lighter">
 				<i class="ace-icon fa fa-envelope"></i>
-				<?php echo lang_get('plugin_eannouncesendpage_title') ?>
+				<?php echo plugin_lang_get('sendpage_title') ?>
 			</h4>
 		</div>
 		<div class="widget-body">
@@ -29,7 +29,8 @@ $user_id = auth_get_current_user_id();
 			<?php echo form_security_field( 'plugin_eannouncesendpage_title' ); ?>
 			<tr>
     			<td class="category">
-                    <?php echo lang_get( 'plugin_eannounce_project' ) ?>
+					<span class="required">* </span>
+                    <?php echo plugin_lang_get( 'project' ) ?>
                 </td>
                 <td class="left">
         			<select name="project">
@@ -48,7 +49,8 @@ $user_id = auth_get_current_user_id();
 			</tr>
 			<tr>
     			<td class="category">
-                    <?php echo lang_get( 'plugin_eannounce_usergroup' ) ?>
+					<span class="required">* </span>
+                    <?php echo plugin_lang_get( 'usergroup' ) ?>
                 </td>
                 <td class="left">
         			<select name="to[]" multiple="multiple" size="6">
@@ -68,7 +70,8 @@ $user_id = auth_get_current_user_id();
 			</tr>
 			<tr>	
 				<td class="category">
-                	<?php echo lang_get( 'plugin_eannounce_emailsubject' ) ?>
+					<span class="required">* </span>
+                	<?php echo plugin_lang_get( 'emailsubject' ) ?>
                 </td>
                 <td class="left">
                 	<textarea name="emailsubject" cols="60" rows="1"></textarea>
@@ -76,7 +79,8 @@ $user_id = auth_get_current_user_id();
             </tr>
 			<tr>
 				<td class="category">
-                    <?php echo lang_get( 'plugin_eannounce_emailbody' ) ?>
+					<span class="required">* </span>
+                    <?php echo plugin_lang_get( 'emailbody' ) ?>
                     </td>
                     <td class="left">
                     <textarea name="emailbody" cols="60" rows="10"></textarea>
@@ -90,7 +94,7 @@ $user_id = auth_get_current_user_id();
 			<div class="widget-toolbox padding-8 clearfix">
 				<span class="required pull-right"> * <?php echo lang_get( 'required' ); ?></span>
 				<input type="submit" name="config_set" class="btn btn-primary btn-sm btn-white btn-round"
-					   value="<?php echo lang_get('plugin_eannounce_sendmailbutton') ?>"/>
+					   value="<?php echo plugin_lang_get('sendmailbutton') ?>"/>
 			</div>
 		</div>
 	</div>

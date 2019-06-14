@@ -1,10 +1,10 @@
 <?PHP
-$s_plugin_eannounce_title = "Email announcement plugin";
-$s_plugin_eannounce_project = "Project";
-$s_plugin_eannounce_config = "Configuration";
-$s_plugin_eannounce_usergroup ="Sending to the following users";
-$s_plugin_eannounce_sendmailbutton ="Send mail";
-$s_plugin_eannounce_emailsubject = "Email Subject";
-$s_plugin_eannounce_emailbody = "Email message";
-$s_plugin_eannounce_sendmail_threshold = "Sender threshold";
-$s_plugin_eannouncesendpage_title = 'Send email messages';
+$s_plugin_Eannounce_title = "Email announcement plugin";
+$s_plugin_Eannounce_project = "Project";
+$s_plugin_Eannounce_config = "Configuration";
+$s_plugin_Eannounce_usergroup ="Sending to the following users";
+$s_plugin_Eannounce_sendmailbutton ="Send mail";
+$s_plugin_Eannounce_emailsubject = "Email Subject";
+$s_plugin_Eannounce_emailbody = "Email message";
+$s_plugin_Eannounce_sendmail_threshold = "Sender threshold";
+$s_plugin_Eannounce_sendpage_title = 'Send email messages';
