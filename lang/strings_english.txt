@@ -1,5 +1,6 @@
 <?PHP
 $s_plugin_eannounce_title = "Email announcement plugin";
+$s_plugin_eannounce_project = "Project";
 $s_plugin_eannounce_config = "Configuration";
 $s_plugin_eannounce_usergroup ="Sending to the following users";
 $s_plugin_eannounce_sendmailbutton ="Send mail";

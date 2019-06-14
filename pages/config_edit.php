@@ -3,7 +3,7 @@
 auth_reauthenticate();
 access_ensure_global_level( config_get( 'manage_plugin_threshold' ) );
 // Read results
-$f_eannounce_sendmail_threshold = gpc_get_int( 'eannounce_sendmail_threshold', ADMINISTRATOR );
+$f_eannounce_sendmail_threshold = gpc_get_int( 'eannounce_sendmail_threshold', REPORTER );
 
 // update results
 plugin_config_set( 'eannounce_sendmail_threshold', $f_eannounce_sendmail_threshold );

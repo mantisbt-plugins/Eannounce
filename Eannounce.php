@@ -8,7 +8,7 @@ class EannouncePlugin extends MantisPlugin {
 		$this->name        = 'Eannounce';
 		$this->description = 'Sending email notifications to user groups';
 		$this->version     = '0.99a';
-		$this->requires    = array('MantisCore'       => '1.2.0',);
+		$this->requires    = array('MantisCore'       => '2.0.0',);
 		$this->author      = 'Istvan Baktai';
 		$this->contact     = 'istvan.baktai_at_gmail.com';
 		$this->url         = 'N/A';
@@ -19,13 +19,13 @@ class EannouncePlugin extends MantisPlugin {
 		{
 		return array
 			(
-			'eannounce_sendmail_threshold'	=> ADMINISTRATOR,
+			'eannounce_sendmail_threshold'	=> REPORTER,
 			);
 		}
 
 	function init() 
 		{
-		plugin_event_hook (EVENT_MENU_MANAGE,'eannounce_form');
+		plugin_event_hook ('EVENT_MENU_MANAGE','eannounce_form');
 		}
 
 	function eannounce_form() 
