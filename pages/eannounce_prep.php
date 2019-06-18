@@ -1,16 +1,25 @@
 <?PHP
 auth_reauthenticate();
 access_ensure_global_level( plugin_config_get( 'eannounce_sendmail_threshold' ) );
-layout_page_header( plugin_lang_get( 'sendpage_title' ) );
+
+layout_page_header_begin( plugin_lang_get( 'sendpage_title' ) );
+// JS Import
+html_javascript_cdn_link(plugin_file('js/eannounce.js'));
+//CSS Import
+html_css_link(plugin_file('css/eannounce.css'));
+layout_page_header_end();
 
 layout_page_begin( 'manage_overview_page.php' );
+
 print_manage_menu('eannounce_prep.php');
+
 $g_send	= plugin_page('eannounce_send.php');
 $user_id = auth_get_current_user_id();
 ?>
 <br/>
 
 <div class="space-10"></div>
+	<input type="hidden" id="recipient_page" value="<?php echo plugin_page('controls/recipients') ?>" />
 	<form id="manage-tags-create-form" method="post" action="<?php echo $g_send; ?>">
 	<div class="widget-box widget-color-blue2">
 		<div class="widget-header widget-header-small">
@@ -33,7 +42,7 @@ $user_id = auth_get_current_user_id();
                     <?php echo plugin_lang_get( 'project' ) ?>
                 </td>
                 <td class="left">
-        			<select name="project">
+        			<select id="eannounce_project" name="project">
                     <?php 
                     	// THIS GENERATES THE USERGROUP LIST
                         $t_projects = project_get_all_rows();
@@ -43,7 +52,7 @@ $user_id = auth_get_current_user_id();
                     		   echo '>' . $t_project['name'] . '</option>';
                     	   }
                     	}
-                    ?>;
+                    ?>
                     </select>
                 </td>
 			</tr>
@@ -53,19 +62,17 @@ $user_id = auth_get_current_user_id();
                     <?php echo plugin_lang_get( 'usergroup' ) ?>
                 </td>
                 <td class="left">
-        			<select name="to[]" multiple="multiple" size="6">
                     <?php 
                     	// THIS GENERATES THE USERGROUP LIST
+                    	$t_access_level_config = plugin_config_get( 'access_levels' );
                     	$t_access_levels_enum_string = config_get( 'access_levels_enum_string' );
                     	$t_enum_values = MantisEnum::getValues( $t_access_levels_enum_string );
-                    	foreach ( $t_enum_values as $t_enum_value ) 
-                    		{
+                    	foreach ( $t_access_level_config as $t_enum_value ) {
                     		$t_access_level = get_enum_element( 'access_levels', $t_enum_value );
-                    		echo '<option value="' . $t_enum_value . '"';
-                    		echo '>' . $t_access_level . '</option>';
-                    		}
-                    ?>;
-                    </select>
+                    		echo '<div><input type="checkbox" name="to[]" value="' . $t_enum_value . '"';
+                    		echo '/><label>' . $t_access_level . '</label></div>';
+                    	}
+                    ?>
                 </td>
 			</tr>
 			<tr>	
@@ -74,7 +81,25 @@ $user_id = auth_get_current_user_id();
                 	<?php echo plugin_lang_get( 'emailsubject' ) ?>
                 </td>
                 <td class="left">
-                	<textarea name="emailsubject" cols="60" rows="1"></textarea>
+                	<textarea name="emailsubject" cols="60" rows="1" ></textarea>
+                </td>
+            </tr>
+            <tr>	
+				<td class="category">
+					<span class="required">* </span>
+                	<?php echo plugin_lang_get( 'to' ) ?>
+                </td>
+                <td class="left">
+                	<textarea id="eannounce_to" name="emailto" cols="60" rows="1"></textarea>
+                </td>
+            </tr>
+            <tr>	
+				<td class="category">
+					<span class="required">* </span>
+                	<?php echo plugin_lang_get( 'cc' ) ?>
+                </td>
+                <td class="left">
+                	<textarea id="eannounce_to" name="emailcc" cols="60" rows="1" disabled><?php echo user_get_email(auth_get_current_user_id()); ?></textarea>
                 </td>
             </tr>
 			<tr>

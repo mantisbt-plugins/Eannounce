@@ -1,24 +1,26 @@
 <?php
 require_once( 'core.php' );
-$f_to = gpc_get_int_array('to');
+require_once(__DIR__.'/../api/utils/utils.php');
+$f_to = explode( ";", gpc_get_string('emailto'));
+$f_cc = gpc_get_string('emailcc');
 
-$usertabla = db_get_table( 'mantis_user_table' );
+$f_project = gpc_get_int('project');
 
-foreach ( $f_to as $t_userlevel ){
-	if ($userlevel != -1) 		{
-		$query = "SELECT id FROM $usertabla WHERE access_level = '$t_userlevel'";
-		$t_result = db_query_bound($query);
-		foreach ($t_result as $t_userid) {	
-			foreach ($t_userid as $t_useradat) {
-				if(ON == config_get( 'enable_email_notification' )) 	{
-					email_store( user_get_email($t_useradat),gpc_get_string('emailsubject'),gpc_get_string('emailbody'));
-				}
-			}
-		}
-	}
-}
+$usertable = db_get_table( 'user' );
+$project_user_table = db_get_table('project_user_list');
+
+send_mail($f_to, gpc_get_string('emailsubject'), gpc_get_string('emailbody'), $f_cc);
 
 if(OFF == config_get( 'email_send_using_cronjob')) 	{
 	email_send_all();
 }
-print_successful_redirect( plugin_page( 'eannounce_prep',TRUE ) );
+
+form_security_purge( 'eannounce_config_form' );
+
+layout_page_header( null, plugin_page( 'eannounce_prep',TRUE ));
+
+layout_page_begin();
+
+html_operation_successful( plugin_page( 'eannounce_prep',TRUE ));
+
+layout_page_end();
