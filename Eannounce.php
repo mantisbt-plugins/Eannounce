@@ -16,9 +16,12 @@ class EannouncePlugin extends MantisPlugin {
 	}
  
 	function config() {
+	   $t_access_levels_enum_string = config_get( 'access_levels_enum_string' );
+	   $t_enum_values = MantisEnum::getValues( $t_access_levels_enum_string );
 	   return array
     		(
-    		'eannounce_sendmail_threshold'	=> MANAGER,
+    		'sendmail_threshold'	=> MANAGER,
+    		'access_levels' => $t_enum_values
     		);
 	}
 
@@ -31,8 +34,5 @@ class EannouncePlugin extends MantisPlugin {
 		  return array('<a href="'. plugin_page( 'eannounce_prep.php' ) . '">' . plugin_lang_get( 'sendpage_title' ) . '</a>' );
 	    }
 	}
-
-		
-	
 
 }
