@@ -52,9 +52,8 @@ function eannounce_log($message, $datetime_prefix = true){
  * @param EmailData $p_email
  * @param string $p_subject Subject of the mail
  * @param string $p_body Body of the mail
- * @param string $p_cc Recipients to put in copy
  */
-function send_mail($p_email, $p_subject, $p_body, $p_cc = "") {
+function send_mail($p_email, $p_subject, $p_body) {
     
     // Get global phpmailer
     global $g_phpMailer;
@@ -77,15 +76,14 @@ function send_mail($p_email, $p_subject, $p_body, $p_cc = "") {
         $g_phpMailer->addBCC( $p_email[$i], '' );
         $i++;
     }
+    
+    $t_cc = user_get_email(auth_get_current_user_id());
 
-    if( $p_cc != "" ) {
-        $t_cc = explode( ";", $p_cc );
-        foreach ( $t_cc as $cc ){
-            $g_phpMailer->addCC( $cc );
-        }
+    if( isset( $t_cc ) ) {
+        $g_phpMailer->addCC( $t_cc );
     }
     
-    email_send_bcc_only($t_mail);
+    send_bcc_only($t_mail);
 }
 
 /**
@@ -94,7 +92,7 @@ function send_mail($p_email, $p_subject, $p_body, $p_cc = "") {
  * @param EmailData $p_email_data
  * @return boolean
  */
-function email_send_bcc_only( EmailData $p_email_data ){
+function send_bcc_only( EmailData $p_email_data ){
     
     $t_email_data = $p_email_data;
     

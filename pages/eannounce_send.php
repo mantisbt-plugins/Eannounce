@@ -2,14 +2,13 @@
 require_once( 'core.php' );
 require_once(__DIR__.'/../api/utils/utils.php');
 $f_to = explode( ";", gpc_get_string('emailto'));
-$f_cc = gpc_get_string('emailcc');
 
 $f_project = gpc_get_int('project');
 
 $usertable = db_get_table( 'user' );
 $project_user_table = db_get_table('project_user_list');
 
-send_mail($f_to, gpc_get_string('emailsubject'), gpc_get_string('emailbody'), $f_cc);
+send_mail($f_to, gpc_get_string('emailsubject'), gpc_get_string('emailbody'));
 
 if(OFF == config_get( 'email_send_using_cronjob')) 	{
 	email_send_all();
