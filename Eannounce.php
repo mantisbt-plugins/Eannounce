@@ -16,13 +16,13 @@ class EannouncePlugin extends MantisPlugin {
 	}
  
 	function config() {
-	   $t_access_levels_enum_string = config_get( 'access_levels_enum_string' );
-	   $t_enum_values = MantisEnum::getValues( $t_access_levels_enum_string );
-	   return array
-    		(
-    		'sendmail_threshold'	=> MANAGER,
-    		'access_levels' => $t_enum_values
-    		);
+        $t_access_levels_enum_string = config_get( 'access_levels_enum_string' );
+        $t_enum_values = MantisEnum::getValues( $t_access_levels_enum_string );
+        return array(
+    		'sendmail_threshold' => MANAGER,
+    		'access_levels'      => $t_enum_values,
+    		'date_format'        => 'Y-m-d H:i:s'
+        );
 	}
 
 	function init() {

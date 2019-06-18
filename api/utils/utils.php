@@ -52,7 +52,7 @@ function eannounce_log($message, $datetime_prefix = true){
  * @param EmailData $p_email
  * @param string $p_subject Subject of the mail
  * @param string $p_body Body of the mail
- */
+ * @return
 function send_mail($p_email, $p_subject, $p_body) {
     
     // Get global phpmailer
@@ -82,14 +82,14 @@ function send_mail($p_email, $p_subject, $p_body) {
     if( isset( $t_cc ) ) {
         $g_phpMailer->addCC( $t_cc );
     }
-    
-    send_bcc_only($t_mail);
+    return send_bcc_only($t_mail);
 }
 
 /**
  * Allows to send emails with only bcc recipients
  * 
  * @param EmailData $p_email_data
+ * @param string log_message
  * @return boolean
  */
 function send_bcc_only( EmailData $p_email_data ){

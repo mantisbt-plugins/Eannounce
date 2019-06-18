@@ -11,3 +11,5 @@ $s_plugin_Eannounce_access_levels = "Niveaux d'accÃ¨s disponibles";
 $s_plugin_Eannounce_sendpage_title = 'Mail groupÃ©';
 $s_plugin_Eannounce_cc = "Cc";
 $s_plugin_Eannounce_to = "Ã€";
+$s_plugin_Eannounce_log_success = "L'utilisateur %s a envoyé un mail groupé aux adresses %s avec l'objet %s.";
+$s_plugin_Eannounce_log_error = "L'utilisateur %s a échoué à envoyer un mail groupé aux adresses %s avec l'objet %s.";
