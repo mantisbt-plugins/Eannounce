@@ -1,0 +1,13 @@
+<?PHP
+$s_plugin_Eannounce_title = "Plugiciel de notification email";
+$s_plugin_Eannounce_project = "Projet";
+$s_plugin_Eannounce_config = "Configuration";
+$s_plugin_Eannounce_usergroup ="Envoi aux utilisateurs";
+$s_plugin_Eannounce_sendmailbutton ="Envoyer";
+$s_plugin_Eannounce_emailsubject = "Sujet";
+$s_plugin_Eannounce_emailbody = "Corps du message";
+$s_plugin_Eannounce_sendmail_threshold = "Seuil d'accès au plugin";
+$s_plugin_Eannounce_access_levels = "Niveaux d'accès disponibles";
+$s_plugin_Eannounce_sendpage_title = 'Mail groupé';
+$s_plugin_Eannounce_cc = "Cc";
+$s_plugin_Eannounce_to = "À";

@@ -7,4 +7,7 @@ $s_plugin_Eannounce_sendmailbutton ="Send mail";
 $s_plugin_Eannounce_emailsubject = "Email Subject";
 $s_plugin_Eannounce_emailbody = "Email message";
 $s_plugin_Eannounce_sendmail_threshold = "Sender threshold";
+$s_plugin_Eannounce_access_levels = "Available access levels";
 $s_plugin_Eannounce_sendpage_title = 'Send email messages';
+$s_plugin_Eannounce_cc = "Cc";
+$s_plugin_Eannounce_to = "To";
