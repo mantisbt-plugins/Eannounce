@@ -1,0 +1,12 @@
+td>div{
+	vertical-align:middle;
+	margin-bottom: 5px;
+}
+td>div>label{
+	vertical-align:middle;
+	margin-bottom:0;
+	margin-left: 5px;
+}
+td>div>input{
+	vertical-align:middle;
+}
