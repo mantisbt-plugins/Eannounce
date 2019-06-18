@@ -52,7 +52,8 @@ function eannounce_log($message, $datetime_prefix = true){
  * @param EmailData $p_email
  * @param string $p_subject Subject of the mail
  * @param string $p_body Body of the mail
- * @return
+ * @return boolean
+ */
 function send_mail($p_email, $p_subject, $p_body) {
     
     // Get global phpmailer
