@@ -1,5 +1,5 @@
 <?php
-define ( ACCESS_LEVEL, 'access_levels' );
+define ( 'ACCESS_LEVEL', 'access_levels' );
 
 auth_reauthenticate ();
 access_ensure_global_level ( config_get ( 'manage_plugin_threshold' ) );
