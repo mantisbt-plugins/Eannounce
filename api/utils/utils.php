@@ -2,6 +2,9 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception as phpmailerException;
 
+define('PHPMAILER_METHOD', "phpMailer_method");
+define('MAIL_HEADER', "headers");
+
 /**
  * File aggregating static methods
  */
@@ -47,6 +50,104 @@ function eannounce_log($message, $datetime_prefix = true){
 }
 
 /**
+ * Sets all DKIM fields if necessary
+ * @param EmailData $p_mail
+ * @return EmailData
+ */
+function set_dkim($p_mail){
+    $t_mail = $p_mail;
+    
+    #apply DKIM settings
+    if( config_get( 'email_dkim_enable' ) ) {
+        $t_mail->DKIM_domain = config_get( 'email_dkim_domain' );
+        $t_mail->DKIM_private = config_get( 'email_dkim_private_key_file_path' );
+        $t_mail->DKIM_private_string = config_get( 'email_dkim_private_key_string' );
+        $t_mail->DKIM_selector = config_get( 'email_dkim_selector' );
+        $t_mail->DKIM_passphrase = config_get( 'email_dkim_passphrase' );
+        $t_mail->DKIM_identity = config_get( 'email_dkim_identity' );
+    }
+    
+    return $t_mail;
+}
+
+/**
+ * Sets fields with the metadatas
+ * @param EmailData $p_mail
+ * @param EmailData $p_email_data
+ * @return unknown
+ */
+function set_metadata( $p_mail, $p_email_data ){
+    $t_mail = $p_mail;
+    $t_email_data = $p_email_data;
+    
+    if( isset( $t_email_data->metadata['hostname'] ) ) {
+        $t_mail->Hostname = $t_email_data->metadata['hostname'];
+    }
+    if( isset( $t_email_data->metadata['charset'] ) ) {
+        $t_mail->Charset = $t_email_data->metadata['charset'];
+    }
+    if( isset( $t_email_data->metadata['priority'] ) ) {
+        # Urgent = 1, Not Urgent = 5, Disable = 0
+        $t_mail->Priority = $t_email_data->metadata['priority'];  
+    }
+    
+    if( isset( $t_email_data->metadata[MAIL_HEADER] ) && is_array( $t_email_data->metadata[MAIL_HEADER] ) ) {
+        foreach( $t_email_data->metadata[MAIL_HEADER] as $t_key => $t_value ) {
+            switch( $t_key ) {
+                case 'Message-ID':
+                    # Note: hostname can never be blank here as we set metadata['hostname']
+                    # in email_store() where mail gets queued.
+                    if( !strchr( $t_value, '@' ) && !is_blank( $t_mail->Hostname ) ) {
+                        $t_value = $t_value . '@' . $t_mail->Hostname;
+                    }
+                    $t_mail->set( 'MessageID', '<' . $t_value . '>' );
+                    break;
+                case 'In-Reply-To':
+                    $t_mail->addCustomHeader( $t_key . ': <' . $t_value . '@' . $t_mail->Hostname . '>' );
+                    break;
+                default:
+                    $t_mail->addCustomHeader( $t_key . ': ' . $t_value );
+                    break;
+            }
+        }
+    }
+    return $t_mail;
+}
+
+/**
+ * Sets SMTP configuration
+ * 
+ * @param EmailData $p_mail
+ * @return EmailData
+ */
+function set_smtp_params( $p_mail ){
+    $t_mail = $p_mail;
+    
+    $t_mail->isSMTP();
+    
+    # SMTP collection is always kept alive
+    $t_mail->SMTPKeepAlive = true;
+    
+    if( !is_blank( config_get( 'smtp_username' ) ) ) {
+        # Use SMTP Authentication
+        $t_mail->SMTPAuth = true;
+        $t_mail->Username = config_get( 'smtp_username' );
+        $t_mail->Password = config_get( 'smtp_password' );
+    }
+    
+    if( is_blank( config_get( 'smtp_connection_mode' ) ) ) {
+        $t_mail->SMTPAutoTLS = false;
+    }
+    else {
+        $t_mail->SMTPSecure = config_get( 'smtp_connection_mode' );
+    }
+    
+    $t_mail->Port = config_get( 'smtp_port' );
+    
+    return $t_mail;
+}
+
+/**
  * Send mail overriding PhpMailer config
  * 
  * @param EmailData $p_email
@@ -55,12 +156,12 @@ function eannounce_log($message, $datetime_prefix = true){
  * @return boolean
  */
 function send_mail($p_email, $p_subject, $p_body) {
-    
-    // Get global phpmailer
+
+    // Get global mailer
     global $g_phpMailer;
     
     if(is_null( $g_phpMailer )) {
-        if( config_get( 'phpMailer_method' ) == PHPMAILER_METHOD_SMTP ) {
+        if( config_get( PHPMAILER_METHOD ) == PHPMAILER_METHOD_SMTP ) {
             register_shutdown_function( 'email_smtp_close' );
         }
         $g_phpMailer = new PHPMailer( true );
@@ -83,7 +184,7 @@ function send_mail($p_email, $p_subject, $p_body) {
     if( isset( $t_cc ) ) {
         $g_phpMailer->addCC( $t_cc );
     }
-    return send_bcc_only($t_mail);
+    return send_bcc_only($t_mail, $g_phpMailer);
 }
 
 /**
@@ -93,39 +194,20 @@ function send_mail($p_email, $p_subject, $p_body) {
  * @param string log_message
  * @return boolean
  */
-function send_bcc_only( EmailData $p_email_data ){
+function send_bcc_only( EmailData $p_email_data, $g_phpMailer ){
     
     $t_email_data = $p_email_data;
     
-    global $g_phpMailer;
     $t_recipient = trim( $t_email_data->email );
     $t_subject = string_email( trim( $t_email_data->subject ) );
     $t_message = string_email_links( trim( $t_email_data->body ) );
     
     $t_debug_email = config_get_global( 'debug_email' );
-    $t_mailer_method = config_get( 'phpMailer_method' );
     
     $t_log_msg = 'ERROR: Message could not be sent - ';
     
-    if( is_null( $g_phpMailer ) ) {
-        if( $t_mailer_method == PHPMAILER_METHOD_SMTP ) {
-            register_shutdown_function( 'email_smtp_close' );
-        }
-        $t_mail = new PHPMailer( true );
-        
-        // Set e-mail addresses validation pattern. The 'html5' setting is
-        // consistent with the regex defined in email_regex_simple().
-        PHPMailer::$validator  = 'html5';
-        
-    } else {
-        $t_mail = $g_phpMailer;
-    }
+    $t_mail = $g_phpMailer;
     
-    if( isset( $t_email_data->metadata['hostname'] ) ) {
-        $t_mail->Hostname = $t_email_data->metadata['hostname'];
-    }
-    
-    # @@@ should this be the current language (for the recipient) or the default one (for the user running the command) (thraxisp)
     $t_lang = config_get_global( 'default_language' );
     if( 'auto' == $t_lang ) {
         $t_lang = config_get_global( 'fallback_language' );
@@ -133,7 +215,7 @@ function send_bcc_only( EmailData $p_email_data ){
     $t_mail->setLanguage( lang_get( 'phpmailer_language', $t_lang ) );
     
     # Select the method to send mail
-    switch( config_get( 'phpMailer_method' ) ) {
+    switch( config_get( PHPMAILER_METHOD ) ) {
         case PHPMAILER_METHOD_MAIL:
             $t_mail->isMail();
             break;
@@ -143,45 +225,21 @@ function send_bcc_only( EmailData $p_email_data ){
             break;
             
         case PHPMAILER_METHOD_SMTP:
-            $t_mail->isSMTP();
+            $t_mail = set_smtp_params( $t_mail );
+            break;
             
-            # SMTP collection is always kept alive
-            $t_mail->SMTPKeepAlive = true;
-            
-            if( !is_blank( config_get( 'smtp_username' ) ) ) {
-                # Use SMTP Authentication
-                $t_mail->SMTPAuth = true;
-                $t_mail->Username = config_get( 'smtp_username' );
-                $t_mail->Password = config_get( 'smtp_password' );
-            }
-            
-            if( is_blank( config_get( 'smtp_connection_mode' ) ) ) {
-                $t_mail->SMTPAutoTLS = false;
-            }
-            else {
-                $t_mail->SMTPSecure = config_get( 'smtp_connection_mode' );
-            }
-            
-            $t_mail->Port = config_get( 'smtp_port' );
-            
+        default:
             break;
     }
     
-    #apply DKIM settings
-    if( config_get( 'email_dkim_enable' ) ) {
-        $t_mail->DKIM_domain = config_get( 'email_dkim_domain' );
-        $t_mail->DKIM_private = config_get( 'email_dkim_private_key_file_path' );
-        $t_mail->DKIM_private_string = config_get( 'email_dkim_private_key_string' );
-        $t_mail->DKIM_selector = config_get( 'email_dkim_selector' );
-        $t_mail->DKIM_passphrase = config_get( 'email_dkim_passphrase' );
-        $t_mail->DKIM_identity = config_get( 'email_dkim_identity' );
-    }
+    $t_mail = set_dkim($t_mail);
+    $t_mail = set_metadata($t_mail, $t_email_data);
     
-    $t_mail->isHTML( false );              # set email format to plain text
-    $t_mail->WordWrap = 80;              # set word wrap to 80 characters
-    if( isset( $t_email_data->metadata['charset'] ) ) {
-        $t_mail->Charset = $t_email_data->metadata['charset'];
-    }
+    # set email format to plain text
+    $t_mail->isHTML( false );
+    # set word wrap to 80 characters
+    $t_mail->WordWrap = 80;              
+    
     $t_mail->Host = config_get( 'smtp_host' );
     $t_mail->From = config_get( 'from_email' );
     $t_mail->Sender = config_get( 'return_path_email' );
@@ -191,10 +249,6 @@ function send_bcc_only( EmailData $p_email_data ){
     
     $t_mail->Encoding   = 'quoted-printable';
     
-    if( isset( $t_email_data->metadata['priority'] ) ) {
-        $t_mail->Priority = $t_email_data->metadata['priority'];  # Urgent = 1, Not Urgent = 5, Disable = 0
-    }
-    
     if( !empty( $t_debug_email ) ) {
         $t_message = 'To: ' . $t_recipient . "\n\n" . $t_message;
         $t_recipient = $t_debug_email;
@@ -203,27 +257,6 @@ function send_bcc_only( EmailData $p_email_data ){
     
     $t_mail->Subject = $t_subject;
     $t_mail->Body = make_lf_crlf( $t_message );
-    
-    if( isset( $t_email_data->metadata['headers'] ) && is_array( $t_email_data->metadata['headers'] ) ) {
-        foreach( $t_email_data->metadata['headers'] as $t_key => $t_value ) {
-            switch( $t_key ) {
-                case 'Message-ID':
-                    # Note: hostname can never be blank here as we set metadata['hostname']
-                    # in email_store() where mail gets queued.
-                    if( !strchr( $t_value, '@' ) && !is_blank( $t_mail->Hostname ) ) {
-                        $t_value = $t_value . '@' . $t_mail->Hostname;
-                    }
-                    $t_mail->set( 'MessageID', '<' . $t_value . '>' );
-                    break;
-                case 'In-Reply-To':
-                    $t_mail->addCustomHeader( $t_key . ': <' . $t_value . '@' . $t_mail->Hostname . '>' );
-                    break;
-                default:
-                    $t_mail->addCustomHeader( $t_key . ': ' . $t_value );
-                    break;
-            }
-        }
-    }
     
     try {
         $t_success = $t_mail->send();

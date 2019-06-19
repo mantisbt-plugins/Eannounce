@@ -13,10 +13,10 @@ plugin_config_set( 'access_levels' , $f_eannounce_access_levels );
 // redirect
 form_security_purge( 'eannounce_config_form' );
 
-layout_page_header( null, plugin_page( 'config',TRUE ) );
+layout_page_header( null, plugin_page( 'config', true ) );
 
 layout_page_begin();
 
-html_operation_successful( plugin_page( 'config',TRUE ) );
+html_operation_successful( plugin_page( 'config', true ) );
 
 layout_page_end();
