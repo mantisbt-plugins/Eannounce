@@ -1,5 +1,6 @@
 <?PHP
 $s_plugin_Eannounce_title = "Email announcement plugin";
+$s_plugin_Eannounce_description = "Allows to send email notifications to user groups by project";
 $s_plugin_Eannounce_project = "Project";
 $s_plugin_Eannounce_config = "Configuration";
 $s_plugin_Eannounce_usergroup ="Sending to the following users";

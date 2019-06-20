@@ -12,10 +12,10 @@ class EannouncePlugin extends MantisPlugin {
      */
     public function register() {
         $this->name = 'Eannounce';
-        $this->description = 'Allows to send email notifications to user groups by project';
+        $this->description = plugin_lang_get( 'description' );
         $this->version = '2.21';
         $this->requires = array (
-                'MantisCore' => '2.0.0'
+                'MantisCore' => '2.21.0'
         );
         // Plugin stored in an issue, put on GitHub
         $this->author = array (
@@ -23,7 +23,6 @@ class EannouncePlugin extends MantisPlugin {
                 'c2pil'
         );
         $this->contact = 'c2pil@gmail.com';
-        $this->url = 'N/A';
         $this->page = 'config';
     }
 
