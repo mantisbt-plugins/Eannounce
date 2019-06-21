@@ -21,7 +21,7 @@ function displayRecipients(profile, checked) {
 		selected_profile[i] = profiles_checked[i].value;
 	}
 	
-	var addresses = $("#eannounce_to")[0].value ? $("#eannounce_to")[0].value.split(";").map(function(item){
+	var addresses = $("#eannounce_bcc")[0].value ? $("#eannounce_bcc")[0].value.split(";").map(function(item){
 		return item.trim();
 	}) : [];
 	var project = $("#eannounce_project")[0].value;
@@ -36,7 +36,7 @@ function displayRecipients(profile, checked) {
 			project : project
 		},
 		success: function(response) {
-			$("#eannounce_to")[0].value = response;
+			$("#eannounce_bcc")[0].value = response;
 		}
 	})
 }

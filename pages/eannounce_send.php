@@ -2,21 +2,21 @@
 require_once( 'core.php' );
 require_once(__DIR__.'/../api/utils/utils.php');
 // Get request params
-$to = gpc_get_string('emailto');
+$bcc = gpc_get_string('emailbcc');
 $f_subject = gpc_get_string( 'emailsubject' );
 $f_body = gpc_get_string( 'emailbody' );
-$f_to = explode( ";", $to);
+$f_bcc = explode( ";", $bcc);
 
 // Get result of sending
-$success = send_mail($f_to, $f_subject, $f_body);
+$success = send_mail($f_bcc, $f_subject, $f_body);
 
 // Prepare log event
 if( $success ){
     $log_message = sprintf( plugin_lang_get( 'log_success' ),
-                    user_get_name(auth_get_current_user_id()), $to, $f_subject);
+                    user_get_name(auth_get_current_user_id()), $bcc, $f_subject);
 } else {
     $log_message = sprintf( plugin_lang_get( 'log_error' ),
-                    user_get_name(auth_get_current_user_id()), $to, $f_subject);
+                    user_get_name(auth_get_current_user_id()), $bcc, $f_subject);
 }
 // Log whether if succeeded or not
 eannounce_log($log_message);

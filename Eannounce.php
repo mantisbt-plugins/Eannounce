@@ -22,7 +22,7 @@ class EannouncePlugin extends MantisPlugin {
                 'Istvan Baktai',
                 'c2pil'
         );
-        $this->contact = 'c2pil@gmail.com';
+        $this->contact = 'c2pil.mi@gmail.com';
         $this->page = 'config';
     }
 

@@ -93,11 +93,11 @@ $user_id = auth_get_current_user_id ();
                                 <tr>
                                     <td class="category"><span
                                         class="required">* </span>
-                                        <?php echo plugin_lang_get( 'to' ) ?>
+                                        <?php echo plugin_lang_get( 'bcc' ) ?>
                                     </td>
                                     <td class="left"><textarea
-                                            id="eannounce_to"
-                                            name="emailto" cols="60"
+                                            id="eannounce_bcc"
+                                            name="emailbcc" cols="60"
                                             rows="1"></textarea></td>
                                 </tr>
                                 <tr>
