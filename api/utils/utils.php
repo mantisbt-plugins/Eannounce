@@ -151,12 +151,13 @@ function set_smtp_params( $p_mail ){
 /**
  * Send mail overriding PhpMailer config
  * 
- * @param EmailData $p_email
+ * @param string[] $p_email Mail addresses of recipients
  * @param string $p_subject Subject of the mail
  * @param string $p_body Body of the mail
+ * @param string[] $p_cc Mail addresses of copy recipients
  * @return boolean
  */
-function send_mail($p_email, $p_subject, $p_body) {
+function send_mail($p_email, $p_subject, $p_body, $p_cc) {
 
     // Get global mailer
     global $g_phpMailer;
@@ -176,22 +177,23 @@ function send_mail($p_email, $p_subject, $p_body) {
     //Add recipients
     $i=0;
     while( $i < count( $p_email )) {
-        $g_phpMailer->addBCC( $p_email[$i], '' );
+        $g_phpMailer->addBCC( $p_email[$i] );
         $i++;
     }
     
     $current_user_mail = user_get_email(auth_get_current_user_id());
-    
-    $t_cc = $current_user_mail;
     
     // Store temporarily original email sender address
     // and set current user address instead
     $original_sender = config_get(FROM_EMAIL);
     config_set(FROM_EMAIL, $current_user_mail);
 
-    if( isset( $t_cc ) ) {
-        $g_phpMailer->addCC( $t_cc );
+    $j = 0;
+    while( $j < count( $p_cc )) {
+        $g_phpMailer->addCC( $p_cc[$j] );
+        $j++;
     }
+    
     $result = send_bcc_only($t_mail, $g_phpMailer);
     // Set original user back
     config_set(FROM_EMAIL, $original_sender);

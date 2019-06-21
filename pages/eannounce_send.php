@@ -3,12 +3,14 @@ require_once( 'core.php' );
 require_once(__DIR__.'/../api/utils/utils.php');
 // Get request params
 $bcc = gpc_get_string('emailbcc');
+$cc = gpc_get_string( 'emailcc' );
 $f_subject = gpc_get_string( 'emailsubject' );
 $f_body = gpc_get_string( 'emailbody' );
-$f_bcc = explode( ";", $bcc);
+$f_bcc = explode( ";", $bcc );
+$f_cc = explode( ";", $cc );
 
 // Get result of sending
-$success = send_mail($f_bcc, $f_subject, $f_body);
+$success = send_mail($f_bcc, $f_subject, $f_body, $f_cc);
 
 // Prepare log event
 if( $success ){

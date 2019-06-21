@@ -93,6 +93,18 @@ $user_id = auth_get_current_user_id ();
                                 <tr>
                                     <td class="category"><span
                                         class="required">* </span>
+                                        <?php echo plugin_lang_get( 'cc' ) ?>
+                                    </td>
+                                    <td class="left">
+                                        <textarea
+                                            id="eannounce_cc"
+                                            name="emailcc" cols="60"
+                                            rows="1"><?php echo user_get_email(auth_get_current_user_id())?></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="category"><span
+                                        class="required">* </span>
                                         <?php echo plugin_lang_get( 'bcc' ) ?>
                                     </td>
                                     <td class="left"><textarea
