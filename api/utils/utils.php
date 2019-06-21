@@ -4,6 +4,7 @@ use PHPMailer\PHPMailer\Exception as phpmailerException;
 
 define('PHPMAILER_METHOD', "phpMailer_method");
 define('MAIL_HEADER', "headers");
+define('FROM_EMAIL', "from_email");
 
 /**
  * File aggregating static methods
@@ -179,12 +180,23 @@ function send_mail($p_email, $p_subject, $p_body) {
         $i++;
     }
     
-    $t_cc = user_get_email(auth_get_current_user_id());
+    $current_user_mail = user_get_email(auth_get_current_user_id());
+    
+    $t_cc = $current_user_mail;
+    
+    // Store temporarily original email sender address
+    // and set current user address instead
+    $original_sender = config_get(FROM_EMAIL);
+    config_set(FROM_EMAIL, $current_user_mail);
 
     if( isset( $t_cc ) ) {
         $g_phpMailer->addCC( $t_cc );
     }
-    return send_bcc_only($t_mail, $g_phpMailer);
+    $result = send_bcc_only($t_mail, $g_phpMailer);
+    // Set original user back
+    config_set(FROM_EMAIL, $original_sender);
+    
+    return $result;
 }
 
 /**
