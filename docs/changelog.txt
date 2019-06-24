@@ -1,7 +1,12 @@
-Version 0.01	istvanb		15-08-2010	First draft
-Version 0.02	istvanb		17-08-2010	Next draft, thanks to Cas Nuy for integrating
-						the plugin to the Mantis
-Version 0.99	istvanb		22-08-2010	Fixed the issue with the user thresholds. Now the plugin is
-						ready to use. Future upgrade: the send email menu should
-						appear for only the authorized users.
-Version 0.99a	davidnewcomb	08-11-2011	Fix bug: eannounce_prep.php redirected to wrong place
+Version 0.01	istvanb		 15-08-2010	First draft
+Version 0.02	istvanb		 17-08-2010	Next draft, thanks to Cas Nuy for integrating
+						                the plugin to the Mantis
+Version 0.99	istvanb		 22-08-2010	Fixed the issue with the user thresholds. Now the plugin is
+                						ready to use. Future upgrade: the send email menu should
+                						appear for only the authorized users.
+Version 0.99a	davidnewcomb 08-11-2011	Fix bug: eannounce_prep.php redirected to wrong place
+Version 2.21    c2pil        26-06-2019 Redesigned for Mantis 2.21
+                                        Designed to add addresses, like an email client
+                                        Restrict to users of a project
+                                        Hide tab for non-authorized users
+                                        Send mail in Bcc, with at least redactor in copy.

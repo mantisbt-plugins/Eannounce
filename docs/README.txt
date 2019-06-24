@@ -25,11 +25,17 @@ the mail.
 CAUTION:
 Be careful to not flood the users with messages, use this feature when its really neccessary
 
-LEGAL BLAH-BLAH:
-The eannounce plugin is free software: feel free to redistribute and/or modify it 
+LICENCE:
+The Eannounce plugin for Mantis is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-The Eannouce plugin is distributed in the hope that it will be useful,
+The Eannounce plugin is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with the Eannounce plugin.  If not, see <https://www.gnu.org/licenses/>.
 
