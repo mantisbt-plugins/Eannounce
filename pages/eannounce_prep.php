@@ -17,7 +17,7 @@
  */
 
 auth_reauthenticate ();
-access_ensure_global_level ( plugin_config_get ( 'eannounce_sendmail_threshold' ) );
+access_ensure_global_level ( plugin_config_get ( 'sendmail_threshold' ) );
 
 layout_page_header_begin ( plugin_lang_get ( 'sendpage_title' ) );
 // JS Import

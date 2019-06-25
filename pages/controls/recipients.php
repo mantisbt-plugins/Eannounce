@@ -24,7 +24,7 @@ $t_recipients = isset( $_POST["addresses"]) ? $_POST["addresses"] : array();
 $t_checked = gpc_get_bool( "checked" );
 $t_profile = gpc_get_int( "selected_profile" );
 $t_project = gpc_get_int( "project" );
-access_ensure_global_level( plugin_config_get( "eannounce_sendmail_threshold" ));
+access_ensure_global_level( plugin_config_get( "sendmail_threshold" ));
 
 $user_table = db_get_table( "user" );
 $user_project_table = db_get_table( "project_user_list" );
