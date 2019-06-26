@@ -195,26 +195,17 @@ function send_mail($p_email, $p_subject, $p_body, $p_cc) {
     //Add recipients
     $i=0;
     while( $i < count( $p_email )) {
-        $g_phpMailer->addBCC( $p_email[$i] );
+        $g_phpMailer->addBCC( str_replace(" ", "", $p_email[$i] ));
         $i++;
     }
-    
-    $current_user_mail = user_get_email(auth_get_current_user_id());
-    
-    // Store temporarily original email sender address
-    // and set current user address instead
-    $original_sender = config_get(FROM_EMAIL);
-    config_set(FROM_EMAIL, $current_user_mail);
 
     $j = 0;
     while( $j < count( $p_cc )) {
-        $g_phpMailer->addCC( $p_cc[$j] );
+        $g_phpMailer->addCC( str_replace(" ", "", $p_cc[$j] ));
         $j++;
     }
     
     $result = send_bcc_only($t_mail, $g_phpMailer);
-    // Set original user back
-    config_set(FROM_EMAIL, $original_sender);
     
     return $result;
 }
@@ -273,9 +264,9 @@ function send_bcc_only( EmailData $p_email_data, $g_phpMailer ){
     $t_mail->WordWrap = 80;              
     
     $t_mail->Host = config_get( 'smtp_host' );
-    $t_mail->From = config_get( 'from_email' );
-    $t_mail->Sender = config_get( 'return_path_email' );
-    $t_mail->FromName = config_get( 'from_name' );
+    $t_mail->From = user_get_email(auth_get_current_user_id());
+    $t_mail->Sender = user_get_email(auth_get_current_user_id());;
+    $t_mail->FromName = user_get_name( auth_get_current_user_id() );
     $t_mail->AddCustomHeader( 'Auto-Submitted:auto-generated' );
     $t_mail->AddCustomHeader( 'X-Auto-Response-Suppress: All' );
     

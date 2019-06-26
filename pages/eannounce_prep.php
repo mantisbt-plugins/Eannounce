@@ -104,7 +104,7 @@ $user_id = auth_get_current_user_id ();
                                     </td>
                                     <td class="left"><textarea
                                             name="emailsubject"
-                                            cols="60" rows="1"></textarea></td>
+                                            cols="60" rows="1" required></textarea></td>
                                 </tr>
                                 <tr>
                                     <td class="category"><span
@@ -115,7 +115,7 @@ $user_id = auth_get_current_user_id ();
                                         <textarea
                                             id="eannounce_cc"
                                             name="emailcc" cols="60"
-                                            rows="1"><?php echo user_get_email(auth_get_current_user_id())?></textarea>
+                                            rows="1" required><?php echo user_get_email(auth_get_current_user_id())?></textarea>
                                     </td>
                                 </tr>
                                 <tr>
@@ -126,7 +126,7 @@ $user_id = auth_get_current_user_id ();
                                     <td class="left"><textarea
                                             id="eannounce_bcc"
                                             name="emailbcc" cols="60"
-                                            rows="1"></textarea></td>
+                                            rows="1" required></textarea></td>
                                 </tr>
                                 <tr>
                                     <td class="category"><span
@@ -135,7 +135,7 @@ $user_id = auth_get_current_user_id ();
                                     </td>
                                     <td class="left"><textarea
                                             name="emailbody" cols="60"
-                                            rows="10"></textarea></td>
+                                            rows="10" required></textarea></td>
                                 </tr>
                             </fieldset>
                         </table>

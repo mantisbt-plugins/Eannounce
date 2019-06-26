@@ -42,5 +42,10 @@ eannounce_log($log_message);
 form_security_purge( 'eannounce_config_form' );
 layout_page_header( null, plugin_page( 'eannounce_prep', true ));
 layout_page_begin();
-html_operation_successful( plugin_page( 'eannounce_prep', true ));
+if( $success ) {
+    html_operation_successful( plugin_page( 'eannounce_prep', true ));
+} else {
+    html_operation_failure( plugin_page( 'eannounce_prep', true ));
+}
+ 
 layout_page_end();
