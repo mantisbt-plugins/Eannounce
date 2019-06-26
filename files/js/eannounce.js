@@ -27,6 +27,10 @@ $(document).ready(function() {
 		displayRecipients($this.currentTarget.value, $this.currentTarget.checked);
 	});
 	
+	$(document).on('change', 'select[name="project"]', function($this){
+		document.getElementById('eannounce-send-message-form').reset();
+	})
+	
 });
 
 function displayRecipients(profile, checked) {

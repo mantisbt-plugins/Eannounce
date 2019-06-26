@@ -40,7 +40,7 @@ $user_id = auth_get_current_user_id ();
 <div class="space-10"></div>
 <input type="hidden" id="recipient_page"
     value="<?php echo plugin_page('controls/recipients') ?>" />
-<form id="manage-tags-create-form" method="post"
+<form id="eannounce-send-message-form" method="post"
     action="<?php echo $g_send; ?>">
     <div class="widget-box widget-color-blue2">
         <div class="widget-header widget-header-small">
@@ -67,7 +67,7 @@ $user_id = auth_get_current_user_id ();
                                         id="eannounce_project"
                                         name="project">
                                          <?php
-                        // THIS GENERATES THE USERGROUP LIST
+                        // project list
                         $t_projects = project_get_all_rows ();
                         foreach ( $t_projects as $t_project ) {
                             if (access_get_project_level ( $t_project ['id'], $user_id )) {
@@ -79,8 +79,7 @@ $user_id = auth_get_current_user_id ();
                                     </select></td>
                                 </tr>
                                 <tr>
-                                    <td class="category"><span
-                                        class="required">* </span>
+                                    <td class="category">
                     <?php echo plugin_lang_get( 'usergroup' ) ?>
                 </td>
                                     <td class="left">
