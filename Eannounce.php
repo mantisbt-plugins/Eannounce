@@ -70,8 +70,11 @@ class EannouncePlugin extends MantisPlugin {
      * @return string[]
      */
     public function eannounce_form() {
+        $threshold = plugin_config_get ( 'sendmail_threshold' );
+        
         if (access_get_global_level ( auth_get_current_user_id () )
-                >= plugin_config_get ( 'sendmail_threshold' )) {
+            >= $threshold &&
+            access_has_any_project_level( $threshold )) {
             return array (
                     '<a href="' . plugin_page ( 'eannounce_prep.php' ) . '">'
                     . plugin_lang_get ( 'sendpage_title' ) . '</a>'
