@@ -28,7 +28,9 @@ $(document).ready(function() {
 	});
 	
 	$(document).on('change', 'select[name="project"]', function($this){
+		var value = $this.currentTarget.value;
 		document.getElementById('eannounce-send-message-form').reset();
+		$this.currentTarget.value = value;
 	})
 	
 });
